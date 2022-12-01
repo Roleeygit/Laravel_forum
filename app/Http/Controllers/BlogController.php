@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controller\BaseController;
+use App\Http\Controllers\BaseController;
 use Validator;
 use App\Models\Blog;
 use App\Http\Resources\Blog as BlogResource;
@@ -13,7 +13,7 @@ class BlogController extends BaseController
     public function index() {
         $blog = Blog::all();
 
-        return  $this->sendRespose(BlogResource::collection($blogs), "Ok");
+        return  $this->sendResponse(BlogResource::collection($blog), "Ok");
     }
     public function store(Request $request) {
         $input = $request->all();
@@ -29,7 +29,7 @@ class BlogController extends BaseController
 
         $blog = Blog::create($input);
 
-        return $this->sendRespose(new BlogResource($blog), "Post létrehozva");
+        return $this->sendResponse(new BlogResource($blog), "Post létrehozva");
     }
     public function show($id) 
     {
@@ -41,10 +41,10 @@ class BlogController extends BaseController
 
         return $this->sendResponse(new BlogResource($blog), "Post betöltve");
     }
-    public function update($request, $blog) 
+    public function update($request, $id) 
     {
         $input = $request->all();
-        $validator = Validator::make($input, 
+        $validator = Validator::make($input,
         [
             "title" => "required",
             "description" => "required"
@@ -55,15 +55,16 @@ class BlogController extends BaseController
             return $this->sendError($validator->errors());
         }
 
-        $blog->title = $input["title"];
-        $blog->description = $input["description"];
-        $blog->save();
+        $blog = Blog::find($id);
+        $blog->update($request->all());
+
+
 
         return $this->sendResponse(new BlogResource($blog), "Post frissítve");
     }
-    public function destroy(Blog $blog) 
-    {
-        $blog-> delete();
+    public function destroy( $id ) 
+    {   Blog::destroy($id);
+
 
         return $this->sendResponse([] , "Post törölve");
     }

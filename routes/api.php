@@ -24,8 +24,8 @@ Route::post('/register', [AuthController::class, "signUp" ]);
 Route::post('/login', [AuthController::class, "signIn" ]);
 Route::get("/blogs", [BlogController::class, "index"]);
 Route::post('/blogs', [BlogController::class, "store" ]);
-Route::get("/blog/{blog}", [BlogController::class, "show"]);
-Route::put("/blog/{blog}", [BlogController::class, "update"]);
-Route::delete("/blog/{blog}", [BlogController::class, "destroy" ]);
+Route::get("/blog/{id}", [BlogController::class, "show"]);
+Route::put("/blog/{id}", [BlogController::class, "update"]);
+Route::delete("/blog/{id}", [BlogController::class, "destroy" ]);
 
 
